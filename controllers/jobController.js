@@ -68,3 +68,24 @@ exports.getJobs = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
+exports.getJobDetails = async (req, res) => {
+  try {
+    const { jobId } = req.param;
+    const job = await Job.findByPk(jobId, {
+      model: Company,
+      attributes: ['name', 'country', 'region'],
+    });
+
+    if (job) {
+      const otherJobs = await Job.findAll({
+        where: { companyId: job.companyId, id: { [Sequelize.Op.ne]: jobId } },
+      });
+      res.json({ job, otherJobs });
+    } else {
+      res.status(404).json({ error: 'Job not found' });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
