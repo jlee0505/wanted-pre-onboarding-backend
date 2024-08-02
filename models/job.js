@@ -1,5 +1,17 @@
-module.exports = (sequelize, DataTypes) => {
-  const Job = sequelize.define('Job', {
+const sequelize = require('../config/db');
+const Company = require('./company');
+
+const Job = sequelize.define(
+  'Job',
+  {
+    companyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Company,
+        key: 'id',
+      },
+    },
     position: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -9,13 +21,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     description: {
-      type: DataTypes.TEXT, // TODO: STRING vs TEXT
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     skills: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  });
-  return Job;
-};
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = Job;
