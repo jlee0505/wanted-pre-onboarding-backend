@@ -1,12 +1,12 @@
 import { Job, Company } from '../models';
 import { Op } from 'sequelize';
+import { CreateJobData, UpdateJobData } from '../types';
 
-// TODO: jobData type 정의
-export const createJobService = async (jobData: any) => {
+export const createJobService = async (jobData: CreateJobData) => {
   return await Job.create(jobData);
 };
 
-export const updateJobService = async (id: number, jobData: any) => {
+export const updateJobService = async (id: number, jobData: UpdateJobData) => {
   return await Job.update(jobData, { where: { id } });
 };
 
