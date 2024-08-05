@@ -1,19 +1,11 @@
 import { Request, Response } from 'express';
-import { Job, Company } from '../models';
-import { Op } from 'sequelize';
+import { Job } from '../models';
+import * as jobService from '../services/jobService';
 
+// TODO: error 핸들링 중복 코드 처리 및 더 잘 핸들링할 수 있는 방법 없을까?
 export const createJob = async (req: Request, res: Response) => {
   try {
-    const { companyId, position, reward, description, skills } = req.body;
-
-    const job = await Job.create({
-      companyId,
-      position,
-      reward,
-      description,
-      skills,
-    });
-
+    const job = await jobService.createJobService(req.body);
     return res.status(201).json({ jobId: job.id });
   } catch (error) {
     if (error instanceof Error) {
@@ -27,15 +19,16 @@ export const createJob = async (req: Request, res: Response) => {
 export const updateJob = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { position, reward, description, skills } = req.body;
+    const jobData = req.body;
+    const job = await jobService.updateJobService(parseInt(id), jobData);
 
-    const [updated] = await Job.update(
-      { position, reward, description, skills },
-      { where: { id: parseInt(id, 10) } }
+    const [updated] = await jobService.updateJobService(
+      parseInt(id, 10),
+      jobData
     );
 
     if (updated) {
-      const updatedJob = await Job.findByPk(id);
+      const updatedJob = await jobService.getJobByIdService(parseInt(id, 10));
       return res.status(200).json(updatedJob);
     }
 
@@ -53,7 +46,7 @@ export const deleteJob = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Job.destroy({ where: { id: parseInt(id, 10) } });
+    const deleted = await jobService.deleteJobService(parseInt(id, 10));
 
     if (deleted) {
       return res.status(204).send();
@@ -71,15 +64,7 @@ export const deleteJob = async (req: Request, res: Response) => {
 
 export const getJobs = async (req: Request, res: Response) => {
   try {
-    const jobs = await Job.findAll({
-      include: [
-        {
-          model: Company,
-          as: 'Company',
-        },
-      ],
-    });
-
+    const jobs = await jobService.getJobsService();
     return res.status(200).json(jobs);
   } catch (error) {
     if (error instanceof Error) {
@@ -94,14 +79,7 @@ export const getJobById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const job = await Job.findByPk(id, {
-      include: [
-        {
-          model: Company,
-          as: 'Company',
-        },
-      ],
-    });
+    const job = await jobService.getJobByIdService(parseInt(id, 10));
 
     if (job) {
       return res.status(200).json(job);
@@ -122,23 +100,7 @@ export const getJobDetails = async (req: Request, res: Response) => {
     const { id } = req.params;
     const jobId = parseInt(id, 10);
 
-    const job = await Job.findOne({
-      where: { id: jobId },
-      include: [
-        {
-          model: Company,
-          as: 'Company',
-          include: [
-            {
-              model: Job,
-              as: 'jobs',
-              where: { id: { [Op.ne]: jobId } },
-              required: false,
-            },
-          ],
-        },
-      ],
-    });
+    const job = await jobService.getJobDetailService(jobId);
 
     if (!job) {
       return res.status(404).json({ error: 'Job Not Found' });
