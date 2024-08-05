@@ -65,7 +65,8 @@ export const getJobs = async (
   next: NextFunction
 ) => {
   try {
-    const jobs = await jobService.getJobsService();
+    const keyword = req.query.search as string;
+    const jobs = await jobService.getJobsService(keyword);
     return res.status(200).json(jobs);
   } catch (error) {
     next(error);

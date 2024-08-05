@@ -14,8 +14,17 @@ export const deleteJobService = async (id: number) => {
   return await Job.destroy({ where: { id } });
 };
 
-export const getJobsService = async () => {
+export const getJobsService = async (keyword?: string) => {
+  const whereClause: any = {};
+
+  if (keyword) {
+    whereClause.position = {
+      [Op.iLike]: `%${keyword}%`,
+    };
+  }
+
   return await Job.findAll({
+    where: whereClause,
     include: [{ model: Company, as: 'Company' }],
   });
 };
