@@ -1,4 +1,3 @@
-// models/job.ts
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/db';
 import { Company } from './company';
@@ -29,7 +28,6 @@ export class Job
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Define associations
   public Company!: Company;
 }
 

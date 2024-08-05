@@ -14,7 +14,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/jobs', jobRoutes); // Ensure routes are prefixed with /jobs
+app.use('/jobs', jobRoutes);
 app.use((req: Request, res: Response, next: any) => {
   console.log(`${req.method} ${req.url}`);
   next();
