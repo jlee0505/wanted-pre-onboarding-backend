@@ -1,5 +1,6 @@
 import jobRoutes from './routes/jobRoutes';
 import { sequelize } from './models';
+import { errorHandler } from './middleware/errorHandler';
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -19,6 +20,7 @@ app.use((req: Request, res: Response, next: any) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
