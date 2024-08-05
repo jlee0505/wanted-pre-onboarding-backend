@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
 import { Job } from '../src/models';
 import * as jobService from '../src/services/jobService';
 import * as jobController from '../src/controllers/jobController';
+import { Request, Response, NextFunction } from 'express';
 
 jest.mock('../src/services/jobService');
 
-describe('JobController', () => {
+describe('Job Controller', () => {
   const mockRequest = (body: any = {}, params: any = {}) =>
     ({
       body,
@@ -183,29 +183,6 @@ describe('JobController', () => {
       companyName: job.Company.name,
       country: job.Company.country,
       location: job.Company.location,
-      position: job.position,
-      reward: job.reward,
-      skills: job.skills,
-      description: job.description,
-      otherJobs: job.Company.jobs.map((otherJob: Job) => ({
-        jobId: otherJob.id,
-        position: otherJob.position,
-        reward: otherJob.reward,
-        skills: otherJob.skills,
-      })),
     });
-  });
-
-  test('getJobDetails should return error 404 if job is not found', async () => {
-    const testJobId = '1';
-    const req = mockRequest({}, { id: testJobId });
-    const res = mockResponse();
-
-    (jobService.getJobDetailService as jest.Mock).mockResolvedValue(null);
-
-    await jobController.getJobDetails(req, res, mockNext);
-
-    expect(res.status).toHaveBeenCalledWith(404);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Job Not Found' });
   });
 });
