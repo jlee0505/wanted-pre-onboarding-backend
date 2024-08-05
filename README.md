@@ -14,7 +14,7 @@
   - [ ] (선택사항) 채용공고 검색 기능 구현
 - [x] 채용 상세 페이지를 가져옵니다.
   - [x] "채용내용"이 추가적으로 담겨있습니다.
-  - [ ] (선택사항) 해당 회사가 올린 다른 채용공고가 추가적으로 포함됩니다.
+  - [x] (선택사항) 해당 회사가 올린 다른 채용공고가 추가적으로 포함됩니다.
 - [ ] (선택사항) 사용자는 채용 공고에 지원합니다.
   - [ ] 사용자는 1회만 지원 가능합니다.
 
@@ -68,3 +68,61 @@
 4. 프로젝트 구조 및 설계 (10%)
    - 디렉토리 구조의 논리적 배치
    - 디자인 패턴의 적절한 사용
+
+# Recruitment Service
+
+This is a simple recruitment service API built with Node.js and Express.js. It allows companies to post job listings and users to view and apply for jobs.
+
+## Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/recruitment-service.git
+   cd recruitment-service
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the server:
+
+   ```bash
+   npm start
+   ```
+
+## Endpoints
+
+- **POST /api/jobs**: Create a new job listing.
+- **PUT /api/jobs/:jobId**: Update an existing job listing.
+- **DELETE /api/jobs/:jobId**: Delete a job listing.
+- **GET /api/jobs**: Get a list of job listings.
+- **GET /api/jobs/:jobId**: Get details of a specific job listing.
+
+## Example JSON Requests
+
+### Create Job
+
+```json
+{
+  "companyId": 1,
+  "position": "Backend Developer",
+  "reward": 1000000,
+  "description": "Looking for a backend developer skilled in Node.js",
+  "skills": "Node.js"
+}
+```
+
+### Update Job
+
+```json
+{
+  "position": "Senior Backend Developer",
+  "reward": 1500000,
+  "description": "Looking for a senior backend developer skilled in Node.js and Express.js",
+  "skills": "Node.js, Express.js"
+}
+```
