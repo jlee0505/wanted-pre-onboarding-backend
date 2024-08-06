@@ -7,6 +7,7 @@ import {
   getJobById,
   getJobDetails,
 } from '../controllers/jobController';
+import { applyToJob } from '../controllers/applicationController';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.delete('/:id', deleteJob);
 router.get('/', getJobs);
 router.get('/:id', getJobById);
 router.get('/details/:id', getJobDetails);
+router.post('/apply', applyToJob);
 
 export default router;

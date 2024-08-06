@@ -1,23 +1,10 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import sequelize from '../config/db';
-
-export enum JobApplicationStatus {
-  PENDING = 'pending',
-  ACCEPTED = 'accepted',
-  REJECTED = 'rejected',
-}
-
-interface ApplicationAttributes {
-  id: number;
-  userId: number;
-  jobId: number;
-  status: JobApplicationStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-interface ApplicationCreationAttributes
-  extends Optional<ApplicationAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
+import {
+  ApplicationAttributes,
+  ApplicationCreationAttributes,
+  JobApplicationStatus,
+} from '../types/application';
 
 export class Application
   extends Model<ApplicationAttributes, ApplicationCreationAttributes>
@@ -47,9 +34,16 @@ Application.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
+      type: DataTypes.ENUM(
+        JobApplicationStatus.PENDING,
+        JobApplicationStatus.ACCEPTED,
+        JobApplicationStatus.REJECTED
+      ),
       allowNull: false,
     },
   },
-  { sequelize, tableName: 'application' }
+  {
+    sequelize,
+    tableName: 'applications',
+  }
 );

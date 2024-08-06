@@ -13,14 +13,14 @@ Job.belongsTo(Company, { foreignKey: 'companyId', as: 'Company' });
 
 Job.hasMany(Application, {
   foreignKey: 'jobId',
-  as: 'application',
+  as: 'applications',
   onDelete: 'CASCADE',
 });
 Application.belongsTo(Job, { foreignKey: 'jobId', as: 'Job' });
 
 User.hasMany(Application, {
   foreignKey: 'userId',
-  as: 'application',
+  as: 'applications',
   onDelete: 'CASCADE',
 });
 Application.belongsTo(User, { foreignKey: 'userId', as: 'User' });
