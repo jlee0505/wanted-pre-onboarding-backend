@@ -12,9 +12,3 @@ export interface UpdateJobData {
   description?: string;
   skills?: string;
 }
-
-export enum JobApplicationStatus {
-  PENDING = 'pending',
-  ACCEPTED = 'accepted',
-  REJECTED = 'rejected',
-}
