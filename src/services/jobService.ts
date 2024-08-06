@@ -1,6 +1,6 @@
 import { Job, Company } from '../models';
 import { Op } from 'sequelize';
-import { CreateJobData, UpdateJobData } from '../types';
+import { CreateJobData, UpdateJobData } from '../types/job';
 
 export const createJobService = async (jobData: CreateJobData) => {
   return await Job.create(jobData);

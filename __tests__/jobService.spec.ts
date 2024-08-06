@@ -21,6 +21,16 @@ jest.mock('../src/models', () => ({
   Company: jest.fn(),
 }));
 
+jest.mock('sequelize', () => {
+  const actualSequelize = jest.requireActual('sequelize');
+  return {
+    ...actualSequelize,
+    Op: {
+      ne: Symbol('ne'),
+    },
+  };
+});
+
 describe('Job Service', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -126,6 +136,7 @@ describe('Job Service', () => {
     expect(result).toEqual(jobs);
     expect(Job.findAll).toHaveBeenCalledWith({
       include: [{ model: Company, as: 'Company' }],
+      where: {},
     });
   });
 
